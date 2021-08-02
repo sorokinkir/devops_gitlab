@@ -1,0 +1,23 @@
+version: '3.9'
+
+services: 
+    gitlab:
+        image: gitlab/gitlab-ce:14.1.1-ce.0
+        container_name: gitlab
+        hostname: gitlab
+        restart: always
+        ports: 
+            - '8080:80'
+            - '9443:443'
+            - '9022:22'
+        volumes: 
+            - '/srv/gitlab/config:/etc/gitlab'
+            - '/srv/gitlab/logs:/var/logs/gitlab'
+            - '/srv/gitlab/data:/var/opt/gitlab'
+        
+    gitlab-runner:
+        image: gitlab/gitlab-runner:latest
+        depends_on: 
+            - gitlab
+        privileged: true
+
